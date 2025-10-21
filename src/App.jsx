@@ -1,6 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
-import './utils/testSupabase' // Import test to run automatically
+
+// Only run Supabase tests in development to avoid runtime errors on static hosts
+if (import.meta.env.DEV) {
+  import('./utils/testSupabase')
+}
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
@@ -20,7 +24,8 @@ import ChangeEmail from './pages/ChangeEmail'
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      {/* Use Vite's base URL so routing works on GitHub Pages subpath */}
+      <Router basename={import.meta.env.BASE_URL}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
