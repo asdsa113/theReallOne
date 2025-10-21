@@ -12,5 +12,10 @@ export default defineConfig({
       }
     }
   }
+  ,
+  // Disable sourcemaps in production builds to avoid embedding absolute local paths
+  build: {
+    sourcemap: false
+  }
 })
 

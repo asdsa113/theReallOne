@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
+    "server": "RUN_LOCAL=true nodemon server/index.js",
     "client": "vite",
     "build": "vite build",
+    "vercel-build": "npm run build",
+    "start": "node server/index.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -32,5 +34,9 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
     "vite": "^5.0.8"
+  }
+  ,
+  "engines": {
+    "node": "18.x"
   }
 }
