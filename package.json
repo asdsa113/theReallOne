@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "concurrently \"npm run server\" \"npm run client\"",
     "server": "RUN_LOCAL=true nodemon server/index.js",
     "client": "vite",
-    "build": "vite build",
-    "vercel-build": "npm run build",
+    "dev": "vite build",
+    "vercel-build": "npm run dev",
     "start": "node server/index.js",
     "preview": "vite preview"
   },
