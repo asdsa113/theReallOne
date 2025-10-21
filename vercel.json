@@ -23,7 +23,7 @@
       "dest": "/index.html"
     }
   ],
-  "installCommand": "npm run build",
+  "installCommand": "npm run dev",
   "buildCommand": "npm run dev",
   "outputDirectory": "build"
 }
