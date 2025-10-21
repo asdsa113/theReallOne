@@ -22,5 +22,8 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "installCommand": "npm run build",
+  "buildCommand": "npm run dev",
+  "outputDirectory": "build"
 }
