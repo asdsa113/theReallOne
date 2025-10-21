@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { getMoviesPopular, getMoviesTopRated } from '../utils/api'
 import MediaGrid from '../components/MediaGrid'
 import Loading from '../components/Loading'
 
@@ -16,10 +16,9 @@ const Movies = () => {
       setLoading(true)
       setPage(1)
       try {
-        const endpoint = filter === 'popular' ? '/api/movies/popular' : '/api/movies/top-rated'
-        const res = await axios.get(`${endpoint}?page=1`)
-        setMovies((res.data.results || []).filter(item => item.poster_path))
-        setTotalPages(res.data.total_pages || 1)
+  const res = filter === 'popular' ? await getMoviesPopular(1) : await getMoviesTopRated(1)
+  setMovies((res.data.results || []).filter(item => item.poster_path))
+  setTotalPages(res.data.total_pages || 1)
       } catch (error) {
         console.error('Error fetching movies:', error)
       } finally {
@@ -36,8 +35,7 @@ const Movies = () => {
     setLoadingMore(true)
     try {
       const nextPage = page + 1
-      const endpoint = filter === 'popular' ? '/api/movies/popular' : '/api/movies/top-rated'
-      const res = await axios.get(`${endpoint}?page=${nextPage}`)
+  const res = filter === 'popular' ? await getMoviesPopular(nextPage) : await getMoviesTopRated(nextPage)
       const newResults = (res.data.results || []).filter(item => item.poster_path)
       setMovies(prev => [...prev, ...newResults])
       setPage(nextPage)

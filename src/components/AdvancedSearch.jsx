@@ -37,8 +37,8 @@ const AdvancedSearch = ({ onClose, isOpen }) => {
 
   const fetchSuggestions = async (searchQuery) => {
     try {
-      const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(searchQuery)}`)
-      const data = await response.json()
+      const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${encodeURIComponent(searchQuery)}&page=1`)
+      const data = await res.json()
       setSuggestions(data.results || [])
     } catch (error) {
       console.error('Error fetching suggestions:', error)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import { getMoviesByGenre, getTVByGenre } from '../utils/api'
 import MediaGrid from '../components/MediaGrid'
 import Loading from '../components/Loading'
 
@@ -25,10 +25,9 @@ const Genre = () => {
       setLoading(true)
       setPage(1)
       try {
-        const endpoint = type === 'movie' ? `/api/movies/genre/${id}` : `/api/tv/genre/${id}`
-        const res = await axios.get(`${endpoint}?page=1`)
-        setItems((res.data.results || []).filter(item => item.poster_path))
-        setTotalPages(res.data.total_pages || 1)
+  const res = type === 'movie' ? await getMoviesByGenre(id, 1) : await getTVByGenre(id, 1)
+  setItems((res.data.results || []).filter(item => item.poster_path))
+  setTotalPages(res.data.total_pages || 1)
       } catch (error) {
         console.error('Error fetching by genre:', error)
       } finally {
@@ -45,8 +44,7 @@ const Genre = () => {
     setLoadingMore(true)
     try {
       const nextPage = page + 1
-      const endpoint = type === 'movie' ? `/api/movies/genre/${id}` : `/api/tv/genre/${id}`
-      const res = await axios.get(`${endpoint}?page=${nextPage}`)
+  const res = type === 'movie' ? await getMoviesByGenre(id, nextPage) : await getTVByGenre(id, nextPage)
       const newResults = (res.data.results || []).filter(item => item.poster_path)
       setItems(prev => [...prev, ...newResults])
       setPage(nextPage)

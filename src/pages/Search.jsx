@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { search as tmdbSearch } from '../utils/api'
 import MediaGrid from '../components/MediaGrid'
 import Loading from '../components/Loading'
 
@@ -37,10 +37,10 @@ const Search = () => {
           ...activeFilters
         })
         
-        const res = await axios.get(`/api/search?${params.toString()}`)
-        const resultsData = (res.data.results || []).filter(item => item.poster_path)
-        setResults(resultsData)
-        setTotalPages(res.data.total_pages || 1)
+  const res = await tmdbSearch(query, filter, 1)
+  const resultsData = (res.data.results || []).filter(item => item.poster_path)
+  setResults(resultsData)
+  setTotalPages(res.data.total_pages || 1)
         
         // Set "Did you mean..." suggestion from the first result
         if (resultsData.length > 0) {
@@ -77,8 +77,8 @@ const Search = () => {
         ...activeFilters
       })
       
-      const res = await axios.get(`/api/search?${params.toString()}`)
-      const newResults = (res.data.results || []).filter(item => item.poster_path)
+  const res = await tmdbSearch(query, filter, nextPage)
+  const newResults = (res.data.results || []).filter(item => item.poster_path)
       setResults(prev => [...prev, ...newResults])
       setPage(nextPage)
     } catch (error) {

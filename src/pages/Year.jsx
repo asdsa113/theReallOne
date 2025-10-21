@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import { getMoviesByYear, getTVByYear } from '../utils/api'
 import MediaGrid from '../components/MediaGrid'
 import Loading from '../components/Loading'
 
@@ -17,10 +17,9 @@ const Year = () => {
       setLoading(true)
       setPage(1)
       try {
-        const endpoint = type === 'movie' ? `/api/movies/year/${year}` : `/api/tv/year/${year}`
-        const res = await axios.get(`${endpoint}?page=1`)
-        setItems((res.data.results || []).filter(item => item.poster_path))
-        setTotalPages(res.data.total_pages || 1)
+  const res = type === 'movie' ? await getMoviesByYear(year, 1) : await getTVByYear(year, 1)
+  setItems((res.data.results || []).filter(item => item.poster_path))
+  setTotalPages(res.data.total_pages || 1)
       } catch (error) {
         console.error('Error fetching by year:', error)
       } finally {
@@ -37,8 +36,7 @@ const Year = () => {
     setLoadingMore(true)
     try {
       const nextPage = page + 1
-      const endpoint = type === 'movie' ? `/api/movies/year/${year}` : `/api/tv/year/${year}`
-      const res = await axios.get(`${endpoint}?page=${nextPage}`)
+  const res = type === 'movie' ? await getMoviesByYear(year, nextPage) : await getTVByYear(year, nextPage)
       const newResults = (res.data.results || []).filter(item => item.poster_path)
       setItems(prev => [...prev, ...newResults])
       setPage(nextPage)

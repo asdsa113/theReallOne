@@ -195,7 +195,7 @@ Edit `tailwind.config.js` to customize the color scheme.
 npm run build
 ```
 
-This creates optimized production files in the `dist/` directory.
+This creates optimized production files in the `docs/` directory (configured for GitHub Pages).
 
 ## Notes
 
@@ -203,6 +203,38 @@ This creates optimized production files in the `dist/` directory.
 - Some sources may have regional restrictions
 - TMDB API has rate limits (check their documentation)
 - MongoDB is optional - watchlist uses localStorage by default
+
+## Deploy to GitHub Pages
+
+This project is configured to build into the `docs/` folder so you can publish it easily with GitHub Pages.
+
+1. In `vite.config.js` the `base` value is set to `/theReallOne/`. If your repository name differs, update that value.
+
+2. Set your TMDB API key locally before building (so client requests work):
+
+```bash
+export VITE_TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+3. Build the site (produces `docs/`):
+
+```bash
+npm run build
+```
+
+4. Commit and push the `docs/` folder to `main` (or enable GitHub Pages to serve from the `docs/` folder in repository settings):
+
+```bash
+git add docs
+git commit -m "chore: publish docs for GitHub Pages"
+git push origin main
+```
+
+5. In your GitHub repository settings → Pages, set the source to "Deploy from a branch" and select `main` / `docs` as the folder.
+
+Notes:
+- Client-side TMDB API key is required for the app to fetch data. The key is public in client requests. If you need to keep it secret, consider using a server proxy instead of publishing the key.
+- If you prefer using GitHub Actions to publish automatically, I can add an action that builds and pushes `docs/` on push to `main`.
 
 ## License
 
